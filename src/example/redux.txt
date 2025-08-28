@@ -1,0 +1,55 @@
+import { createStore } from "redux"
+
+/** state */
+const states = {
+  greeting: "",
+  user: {
+    id: "",
+    name: "",
+  },
+}
+
+/** action creator */
+const actGreeting = (payload) => {
+  return {
+    type: "ACT_GREETING",
+    payload,
+  }
+}
+
+const actUser = (payload) => {
+  return {
+    type: "ACT_USER",
+    payload,
+  }
+}
+
+/** reducer */
+const reducer = (prevState, { type, payload }) => {
+  switch (type) {
+    case "ACT_GREETING":
+      return {
+        ...prevState,
+        greeting: payload,
+      }
+    case "ACT_USER":
+      return {
+        ...prevState,
+        user: payload,
+      }
+    default:
+      return prevState
+  }
+}
+
+/** store  */
+const store = createStore(reducer, states)
+
+/** subscribe */
+store.subscribe(() => {
+  const states = store.getState()
+  console.log(states.greeting)
+})
+
+/** dispatch */
+store.dispatch({ type: "ACT_GREETING", payload: "Hi~" })
