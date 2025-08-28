@@ -1,5 +1,15 @@
-import { Typography, Breadcrumbs, Box } from "@mui/material"
+import {
+  Typography,
+  Breadcrumbs,
+  Box,
+  Button,
+  FormControlLabel,
+  Switch,
+} from "@mui/material"
 import { Link } from "react-router-dom"
+
+import { useDispatch, useSelector } from "react-redux"
+import {} from "../../"
 
 export default function HeaderWrapper() {
   return (
@@ -24,6 +34,21 @@ export default function HeaderWrapper() {
           CHAT
         </Typography>
       </Breadcrumbs>
+      <Box>
+        <Button variant="contained" sx={{ mr: 1 }}>
+          로그인
+        </Button>
+        <Button variant="contained" sx={{ mr: 1 }}>
+          로그아웃
+        </Button>
+        <Button variant="outlined" sx={{ mr: 2 }}>
+          회원가입
+        </Button>
+        <FormControlLabel
+          control={<Switch checked={true} onChange={() => {}} name="theme" />}
+          label="Theme"
+        />
+      </Box>
     </Box>
   )
 }
