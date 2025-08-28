@@ -9,9 +9,11 @@ import {
 import { Link } from "react-router-dom"
 
 import { useDispatch, useSelector } from "react-redux"
-import {} from "../../"
+import { setTheme, toggleTheme } from "@/store/reducers/ui-slice"
 
 export default function HeaderWrapper() {
+  const dispatch = useDispatch()
+  const theme = useSelector((state) => state.ui.theme)
   return (
     <Box
       sx={{
@@ -45,7 +47,15 @@ export default function HeaderWrapper() {
           회원가입
         </Button>
         <FormControlLabel
-          control={<Switch checked={true} onChange={() => {}} name="theme" />}
+          control={
+            <Switch
+              checked={theme === "light"}
+              onChange={() => {
+                dispatch(toggleTheme())
+              }}
+              name="theme"
+            />
+          }
           label="Theme"
         />
       </Box>
