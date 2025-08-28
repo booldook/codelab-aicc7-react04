@@ -8,12 +8,10 @@ import authReducer from "./reducers/auth-slice"
 const uiPersistConfig = {
   key: "ui",
   storage: localStorage,
-  whitelist: ["ui"],
 }
 const authPersistConfig = {
   key: "auth",
   storage: sessionStorage,
-  whitelist: ["auth"],
 }
 const rootReducer = combineReducers({
   ui: persistReducer(uiPersistConfig, uiReducer),
@@ -31,6 +29,8 @@ const store = configureStore({
   devTools: process.env.NODE_ENV !== "production",
 })
 
-const persistor = persistStore(store)
+const persistor = persistStore(store, null, () => {
+  console.log("Persisted state loaded")
+})
 
 export { store, persistor }

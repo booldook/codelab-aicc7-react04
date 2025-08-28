@@ -7,8 +7,12 @@ import "../public/css/fonts.css"
 import "../public/css/base.css"
 import "../public/css/shop.css"
 import Containers from "./Containers"
+import prdJson from "../public/mock/prd.json"
 
 function App() {
+  const json = JSON.stringify(prdJson)
+  const jsObj = JSON.parse(json)
+  console.log(json, jsObj)
   return (
     <StoreProvider store={store}>
       <PersistGate loading={null} persistor={persistor}>
