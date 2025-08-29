@@ -7,14 +7,28 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Box,
 } from "@mui/material"
 import useSWR from "swr"
 import { typiFetcher } from "@/swr"
 
 export default function BoardList() {
-  const { data, error, isLoading } = useSWR("/posts", typiFetcher)
+  const { data, error, isLoading } = useSWR("/posts", typiFetcher, {
+    // refreshInterval: 3000,
+    // revalidateOnMount: true,
+  })
 
-  useEffect(() => {}, [])
+  if (error)
+    return (
+      <Box sx={{ margin: 20, textAlign: "center" }}>
+        페이지를 일시적으로 사용할 수 없습니다.
+      </Box>
+    )
+
+  if (isLoading)
+    return (
+      <Box sx={{ margin: 20, textAlign: "center" }}>데이터를 로딩중입니다.</Box>
+    )
 
   return (
     <TableContainer component={Paper}>
