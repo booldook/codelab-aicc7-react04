@@ -8,8 +8,11 @@ export const ButtonWrapper = styled.div`
 
 export const Button = styled.button`
   padding: 0.5em 0.875em;
-  border-color: ${(props) => props.bColor || "#333"};
-  margin: ${(props) => props.margin || 0};
+  border-color: ${(props) => props.border || "#333"};
+  margin-left: ${(props) => props.ml || 0};
+  margin-right: ${(props) => props.mr || 0};
+  margin-top: ${(props) => props.mt || 0};
+  margin-bottom: ${(props) => props.mb || 0};
   border-style: solid;
   border-width: 1px;
   border-radius: 4px;
