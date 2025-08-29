@@ -8,25 +8,15 @@ import {
   TableRow,
   Paper,
 } from "@mui/material"
-import { api } from "@/modules/api"
+import useSWR from "swr"
+import { typiFetcher } from "@/swr"
 
 export default function BoardList() {
-  const [list, setList] = useState([])
+  const { data } = useSWR("/posts", typiFetcher)
 
-  const getPosts = async () => {
-    const url = "https://jsonplaceholder.typicode.com/posts"
-    const response = await api.get(url)
-    setList(response.data)
-  }
+  console.log(data)
 
-  useEffect(() => {
-    // ;(async () => {
-    //   const url = "https://jsonplaceholder.typicode.com/posts"
-    //   const { data } = await axios.get(url)
-    //   setList(data)
-    // })()
-    getPosts()
-  }, [])
+  useEffect(() => {}, [])
 
   return (
     <TableContainer component={Paper}>
@@ -38,7 +28,7 @@ export default function BoardList() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {list.map((row) => (
+          {(data || []).map((row) => (
             <TableRow
               key={row.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
