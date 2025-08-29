@@ -14,6 +14,9 @@ import { setTheme, toggleTheme } from "@/store/reducers/ui-slice"
 export default function HeaderWrapper() {
   const dispatch = useDispatch()
   const theme = useSelector((state) => state.ui.theme)
+
+  const onGoogleLogin = (e) => {}
+
   return (
     <Box
       sx={{
@@ -38,8 +41,8 @@ export default function HeaderWrapper() {
         </Typography>
       </Breadcrumbs>
       <Box>
-        <Button variant="contained" sx={{ mr: 1 }}>
-          로그인
+        <Button variant="contained" sx={{ mr: 1 }} onClick={onGoogleLogin}>
+          구글로그인
         </Button>
         <Button variant="contained" sx={{ mr: 1 }}>
           로그아웃
