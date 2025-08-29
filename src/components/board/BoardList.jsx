@@ -16,7 +16,6 @@ export default function BoardList() {
   const getPosts = async () => {
     const url = "https://jsonplaceholder.typicode.com/posts"
     const response = await api.get(url)
-    console.log(response)
     setList(response.data)
   }
 
