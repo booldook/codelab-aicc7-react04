@@ -10,17 +10,12 @@ import {
   Box,
 } from "@mui/material"
 import useSWR from "swr"
-import { typiFetcher } from "@/swr"
 import { TestContext } from "@/providers/TestProviders"
 
 export default function BoardList() {
   const { test, setTest } = useContext(TestContext)
 
-  const { data, error, isLoading } = useSWR("/posts", typiFetcher, {
-    // refreshInterval: 3000,
-    // revalidateOnMount: true,
-    // dedupingInterval: 2000
-  })
+  const { data, error, isLoading } = useSWR("/posts")
 
   useEffect(() => {
     console.log(test)

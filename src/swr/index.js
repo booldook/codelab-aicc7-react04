@@ -46,3 +46,30 @@ export const firebasePostFetcher = (url) => {
   const baseURL = "https://jsonplaceholder.typicode.com"
   api.get(baseURL + url).then((response) => response.data)
 }
+export const swrValue = {
+  suspense: false,
+  fetcher: typiFetcher,
+  revalidateIfStale: false,
+  revalidateOnMount: true,
+  revalidateOnFocus: true,
+  revalidateOnReconnect: true,
+  refreshInterval: 0,
+  refreshWhenHidden: false,
+  refreshWhenOffline: false,
+  shouldRetryOnError: false,
+  dedupingInterval: 2000,
+  focusThrottleInterval: 5000,
+  loadingTimeout: 3000,
+  errorRetryInterval: 5000,
+  errorRetryCount: 0,
+  keepPreviousData: true,
+  onLoadingSlow: (key, config) => {},
+  onSuccess: (data, key, config) => {},
+  onError: (err, key, config) => {
+    console.log(err, key, config)
+  },
+  onErrorRetry: (err, key, config, revalidate, revalidateOps) => {},
+  onDiscarded: (key) => {},
+  // compare: (a, b) => true,
+  // isPaused: () => false,
+}
