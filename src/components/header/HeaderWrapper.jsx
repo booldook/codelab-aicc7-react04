@@ -21,6 +21,9 @@ export default function HeaderWrapper() {
   const onGoogleLogin = async (e) => {
     const rs = await signInWithPopup(auth, googleProvider)
     console.log(rs)
+    console.log(rs.user.uid)
+    console.log(rs.user.email)
+    console.log(rs.user.displayName)
   }
 
   return (
