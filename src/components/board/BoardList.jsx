@@ -19,6 +19,7 @@ export default function BoardList() {
   const { data, error, isLoading } = useSWR("/posts", typiFetcher, {
     // refreshInterval: 3000,
     // revalidateOnMount: true,
+    // dedupingInterval: 2000
   })
 
   useEffect(() => {
