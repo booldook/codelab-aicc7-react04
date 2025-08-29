@@ -30,7 +30,7 @@ export default function ShopPage() {
     }
   }
   return (
-    <div className="containers">
+    <div className="containers shop-container">
       <FormWrapper
         onGetPrd={onGetPrd}
         onResetPrd={onResetPrd}

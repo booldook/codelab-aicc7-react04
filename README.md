@@ -8,7 +8,8 @@
 
 - SWR/ReactQuery
 - contextProvider
-- CustomHook, HOF, HOC
+- CustomHook, (HOF, HOC- 프로젝트 때)
+- emotion, scss
 - noServer (firebase -> Auth, Firestore, realtimeDB)
 
 ## 9월 1일 계획
