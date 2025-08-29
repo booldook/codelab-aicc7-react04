@@ -6,8 +6,7 @@ import {
   signInWithPopup,
 } from "@/modules/firebase"
 
-const FirebaseContext = createContext(null)
-
+export const FirebaseContext = createContext(null)
 export default function FirebaseProvider({ children }) {
   const value = {
     auth,

@@ -10,12 +10,18 @@ import { Link } from "react-router-dom"
 
 import { useDispatch, useSelector } from "react-redux"
 import { setTheme, toggleTheme } from "@/store/reducers/ui-slice"
+import { useContext } from "react"
+import { FirebaseContext } from "@/providers/FirebaseProvider"
 
 export default function HeaderWrapper() {
   const dispatch = useDispatch()
   const theme = useSelector((state) => state.ui.theme)
+  const { signInWithPopup, auth, googleProvider } = useContext(FirebaseContext)
 
-  const onGoogleLogin = (e) => {}
+  const onGoogleLogin = async (e) => {
+    const rs = await signInWithPopup(auth, googleProvider)
+    console.log(rs)
+  }
 
   return (
     <Box
