@@ -12,9 +12,7 @@ import useSWR from "swr"
 import { typiFetcher } from "@/swr"
 
 export default function BoardList() {
-  const { data } = useSWR("/posts", typiFetcher)
-
-  console.log(data)
+  const { data, error, isLoading } = useSWR("/posts", typiFetcher)
 
   useEffect(() => {}, [])
 
