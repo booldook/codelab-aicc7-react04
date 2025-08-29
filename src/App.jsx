@@ -6,6 +6,7 @@ import { store, persistor } from "./store"
 import "../public/css/fonts.css"
 import "../public/css/base.css"
 import "../public/css/shop.css"
+import TestProvider from "./providers/TestProviders"
 import Containers from "./Containers"
 
 function App() {
@@ -13,7 +14,9 @@ function App() {
     <StoreProvider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <BrowserRouter>
-          <Containers />
+          <TestProvider>
+            <Containers />
+          </TestProvider>
         </BrowserRouter>
       </PersistGate>
     </StoreProvider>

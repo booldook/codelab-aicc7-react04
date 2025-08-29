@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import {
   Table,
   TableBody,
@@ -11,12 +11,19 @@ import {
 } from "@mui/material"
 import useSWR from "swr"
 import { typiFetcher } from "@/swr"
+import { TestContext } from "@/providers/TestProviders"
 
 export default function BoardList() {
+  const { test, setTest } = useContext(TestContext)
+
   const { data, error, isLoading } = useSWR("/posts", typiFetcher, {
     // refreshInterval: 3000,
     // revalidateOnMount: true,
   })
+
+  useEffect(() => {
+    console.log(test)
+  }, [test])
 
   if (error)
     return (
