@@ -20,7 +20,6 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logOn: (state, action) => {
-      console.log(action)
       state.isLogging = false
       state.isLogOn = !!action.payload.isLogOn
       state.user = action.payload.user

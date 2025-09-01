@@ -11,7 +11,7 @@ import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { setTheme, toggleTheme } from "@/store/reducers/ui-slice"
 import { logOn, logOut } from "@/store/reducers/auth-slice"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { FirebaseContext } from "@/providers/FirebaseProvider"
 
 export default function HeaderWrapper() {
@@ -25,6 +25,10 @@ export default function HeaderWrapper() {
     const { uid = "", email = "", displayName: name = "" } = rs?.user || {}
     dispatch(logOn({ user: { uid, email, name }, isLogOn: !!rs?.user }))
   }
+
+  useEffect(() => {
+    console.log("로그인상태: ", isLogOn)
+  }, [isLogOn])
 
   return (
     <Box
@@ -42,27 +46,37 @@ export default function HeaderWrapper() {
         <Typography component={Link} to="/shop">
           SHOP
         </Typography>
-        <Typography component={Link} to="/board">
-          BOARD
-        </Typography>
-        <Typography component={Link} to="/chat">
-          CHAT
-        </Typography>
+        {isLogOn ? (
+          <Typography component={Link} to="/board">
+            BOARD
+          </Typography>
+        ) : null}
+        {isLogOn ? (
+          <Typography component={Link} to="/chat">
+            CHAT
+          </Typography>
+        ) : null}
       </Breadcrumbs>
       <Box>
-        <Button variant="contained" sx={{ mr: 1 }} onClick={onGoogleLogIn}>
-          구글로그인
-        </Button>
-        <Button
-          variant="contained"
-          sx={{ mr: 1 }}
-          onClick={() => dispatch(logOut())}
-        >
-          로그아웃
-        </Button>
-        <Button variant="outlined" sx={{ mr: 2 }}>
-          회원가입
-        </Button>
+        {!isLogOn ? (
+          <Button variant="contained" sx={{ mr: 1 }} onClick={onGoogleLogIn}>
+            구글로그인
+          </Button>
+        ) : null}
+        {isLogOn ? (
+          <Button
+            variant="contained"
+            sx={{ mr: 1 }}
+            onClick={() => dispatch(logOut())}
+          >
+            로그아웃
+          </Button>
+        ) : null}
+        {!isLogOn ? (
+          <Button variant="outlined" sx={{ mr: 2 }}>
+            회원가입
+          </Button>
+        ) : null}
         <FormControlLabel
           control={
             <Switch
