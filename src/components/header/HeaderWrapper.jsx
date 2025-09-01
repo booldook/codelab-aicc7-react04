@@ -7,12 +7,28 @@ import {
   Switch,
 } from "@mui/material"
 import { Link } from "react-router-dom"
+import styled from "@emotion/styled"
+import { css } from "@emotion/react"
 
 import { useDispatch, useSelector } from "react-redux"
 import { setTheme, toggleTheme } from "@/store/reducers/ui-slice"
 import { logOn, logOut } from "@/store/reducers/auth-slice"
 import { useContext, useEffect } from "react"
 import { FirebaseContext } from "@/providers/FirebaseProvider"
+
+const HeaderRoot = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5em;
+  margin-bottom: 1em;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+`
 
 export default function HeaderWrapper() {
   const dispatch = useDispatch()
@@ -31,14 +47,7 @@ export default function HeaderWrapper() {
   }, [isLogOn])
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        marginBottom: "1em",
-      }}
-    >
+    <HeaderRoot>
       <Typography variant="h4" component={Link} to="/">
         Booldook
       </Typography>
@@ -90,6 +99,6 @@ export default function HeaderWrapper() {
           label="Theme"
         />
       </Box>
-    </Box>
+    </HeaderRoot>
   )
 }
