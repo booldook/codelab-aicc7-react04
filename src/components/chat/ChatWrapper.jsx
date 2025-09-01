@@ -1,7 +1,9 @@
 import styled from "@emotion/styled"
 import { css } from "@emotion/react"
 import { Button, TextField } from "@mui/material"
-import { useState, useRef } from "react"
+import { useState, useRef, useContext, useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { FirebaseContext } from "@/providers/FirebaseProvider"
 
 const WrapperRoot = styled.div``
 const ChatInputWrap = styled.div`
@@ -48,18 +50,34 @@ const dummy = [
 ]
 
 export default function ChatWrapper({ children }) {
+  const { isLogOn, user } = useSelector((state) => state.auth)
+  const { rtRef, onRtValue, rtPush, rtdb } = useContext(FirebaseContext)
   const [list, setList] = useState([...dummy])
   const [comment, setComment] = useState("")
   const [focused, setFocused] = useState(true)
   const inputRef = useRef(null)
+  const commentRef = rtRef(rtdb, "booldook")
+
   // TODO :: 데이터를 저장, Input을 비워준다. Input에 focus
   const onClickButton = (e) => {
-    setList((prev) => [
-      ...prev,
-      { id: prev[prev.length - 1].id + 1, name: "불뚝", comment, isMine: true },
-    ])
-    setComment("")
-    setFocused(true)
+    if (comment.length > 0) {
+      setList((prev) => [
+        ...prev,
+        {
+          id: prev[prev.length - 1].id + 1,
+          name: "불뚝",
+          comment,
+          isMine: true,
+        },
+      ])
+      rtPush(commentRef, {
+        id: user?.uid || "",
+        name: user?.name || "",
+        comment,
+      })
+      setComment("")
+      setFocused(true)
+    }
   }
   // TODO :: shift(o) -> 아무일 안일어남. shift(x) -> 전송
   const onKeyDownInput = (e) => {
@@ -68,6 +86,14 @@ export default function ChatWrapper({ children }) {
       onClickButton()
     }
   }
+
+  useEffect(() => {
+    const unsubscribe = onRtValue(commentRef, (snapshot) => {
+      console.log(snapshot?.val())
+    })
+    return unsubscribe
+  }, [])
+
   return (
     <WrapperRoot>
       <ChatInputWrap>
@@ -90,7 +116,7 @@ export default function ChatWrapper({ children }) {
         </Button>
       </ChatInputWrap>
       <ChatListWrap>
-        {list.map((item, idx) => (
+        {[...list].reverse().map((item, idx) => (
           <ChatList key={idx} css={item.isMine ? active : null}>
             <ChatName>{item.name}</ChatName>
             <ChatComment>{item.comment}</ChatComment>

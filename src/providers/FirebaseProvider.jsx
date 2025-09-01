@@ -1,6 +1,11 @@
 import { initializeApp } from "firebase/app"
 import { getFirestore } from "firebase/firestore"
-import { getDatabase } from "firebase/database"
+import {
+  getDatabase,
+  ref as rtRef,
+  onValue as onRtValue,
+  push as rtPush,
+} from "firebase/database"
 import {
   getAuth,
   GoogleAuthProvider,
@@ -35,6 +40,9 @@ export default function FirebaseProvider({ children }) {
     signInWithPopup,
     db,
     rtdb,
+    rtRef,
+    onRtValue,
+    rtPush,
   }
   return (
     <FirebaseContext.Provider value={value}>
