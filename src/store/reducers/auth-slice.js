@@ -18,6 +18,13 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    logOn: (state, action) => {
+      console.log(action)
+      state.isLogging = false
+      state.isLogOn = !!action.payload
+      state.data = action.payload
+      state.error = null
+    },
     logOut: (state) => {
       state.isLogging = false
       state.isLogOn = false
@@ -46,7 +53,7 @@ const authSlice = createSlice({
 })
 
 export default authSlice.reducer
-export const { logOut } = authSlice.actions
+export const { logOn, logOut } = authSlice.actions
 
 // export default React
 // export { useState, useCallback }
