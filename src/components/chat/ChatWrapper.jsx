@@ -1,7 +1,7 @@
 import styled from "@emotion/styled"
 import { css } from "@emotion/react"
 import { Button, TextField } from "@mui/material"
-import { useState } from "react"
+import { useState, useRef } from "react"
 
 const WrapperRoot = styled.div``
 const ChatInputWrap = styled.div`
@@ -35,11 +35,10 @@ const ChatName = styled.div`
   display: inline-block;
 `
 const ChatComment = styled.div``
-
 const active = css`
   align-self: flex-end;
+  background-color: #6ac030;
 `
-
 const dummy = [
   { id: 1, name: "홍길동", comment: "가나", isMine: false },
   { id: 2, name: "홍길만", comment: "다라", isMine: false },
@@ -50,21 +49,46 @@ const dummy = [
 
 export default function ChatWrapper({ children }) {
   const [list, setList] = useState([...dummy])
-
+  const [comment, setComment] = useState("")
+  const [focused, setFocused] = useState(true)
+  const inputRef = useRef(null)
+  // TODO :: 데이터를 저장, Input을 비워준다. Input에 focus
+  const onClickButton = (e) => {
+    setList((prev) => [
+      ...prev,
+      { id: prev[prev.length - 1].id + 1, name: "불뚝", comment, isMine: true },
+    ])
+    setComment("")
+    setFocused(true)
+  }
+  // TODO :: shift(o) -> 아무일 안일어남. shift(x) -> 전송
+  const onKeyDownInput = (e) => {
+    console.log(e)
+  }
   return (
     <WrapperRoot>
       <ChatInputWrap>
         <TextField
           id="myChat"
+          ref={inputRef}
           label="My Chat"
           variant="outlined"
+          multiline
+          maxRows={3}
           sx={{ flexGrow: 1, mr: 1 }}
+          onKeyDown={onKeyDownInput}
+          onChange={(e) => setComment(e.target.value)}
+          value={comment}
+          autoFocus
+          focused={focused}
         />
-        <Button variant="contained">확인</Button>
+        <Button variant="contained" onClick={onClickButton}>
+          확인
+        </Button>
       </ChatInputWrap>
       <ChatListWrap>
-        {list.map((item) => (
-          <ChatList css={item.isMine ? active : null}>
+        {list.map((item, idx) => (
+          <ChatList key={idx} css={item.isMine ? active : null}>
             <ChatName>{item.name}</ChatName>
             <ChatComment>{item.comment}</ChatComment>
           </ChatList>
