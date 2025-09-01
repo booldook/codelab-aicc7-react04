@@ -63,7 +63,10 @@ export default function ChatWrapper({ children }) {
   }
   // TODO :: shift(o) -> 아무일 안일어남. shift(x) -> 전송
   const onKeyDownInput = (e) => {
-    console.log(e)
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault()
+      onClickButton()
+    }
   }
   return (
     <WrapperRoot>
