@@ -17,13 +17,13 @@ import { FirebaseContext } from "@/providers/FirebaseProvider"
 export default function HeaderWrapper() {
   const dispatch = useDispatch()
   const theme = useSelector((state) => state.ui.theme)
-  const { isLogging, isLogOn, data } = useSelector((state) => state.auth)
+  const { isLogging, isLogOn, user } = useSelector((state) => state.auth)
   const { signInWithPopup, auth, googleProvider } = useContext(FirebaseContext)
 
   const onGoogleLogIn = async (e) => {
     const rs = await signInWithPopup(auth, googleProvider)
     const { uid = "", email = "", displayName: name = "" } = rs?.user || {}
-    dispatch(logOn({ uid, email, name }))
+    dispatch(logOn({ user: { uid, email, name }, isLogOn: !!rs?.user }))
   }
 
   return (

@@ -4,10 +4,11 @@ import axios from "axios"
 const initialState = {
   isLogging: false,
   isLogOn: false,
-  data: {},
+  user: {},
   error: null,
 }
 
+// 예제코드 - 실행되지 않는다.
 export const fetchUser = createAsyncThunk("auth/fetchUser", async (userId) => {
   const url = "https://jsonplaceholder.typicode.com/users/"
   const response = await axios(url + userId)
@@ -21,17 +22,18 @@ const authSlice = createSlice({
     logOn: (state, action) => {
       console.log(action)
       state.isLogging = false
-      state.isLogOn = !!action.payload
-      state.data = action.payload
+      state.isLogOn = !!action.payload.isLogOn
+      state.user = action.payload.user
       state.error = null
     },
     logOut: (state) => {
       state.isLogging = false
       state.isLogOn = false
-      state.data = {}
+      state.user = {}
       state.error = null
     },
   },
+  // 예제코드: 실행되지 않는다.
   extraReducers: (builder) => {
     builder
       .addCase(fetchUser.pending, (state) => {
