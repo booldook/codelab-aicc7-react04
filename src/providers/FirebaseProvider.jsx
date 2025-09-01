@@ -1,11 +1,13 @@
 import { initializeApp } from "firebase/app"
-import { getAnalytics } from "firebase/analytics"
+import { getFirestore } from "firebase/firestore"
+import { getDatabase } from "firebase/database"
 import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
   signOut,
 } from "firebase/auth"
+import { getAnalytics } from "firebase/analytics"
 import { createContext } from "react"
 
 export const FirebaseContext = createContext(null)
@@ -18,16 +20,21 @@ export default function FirebaseProvider({ children }) {
     messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
     appId: import.meta.env.VITE_APP_ID,
     measurementId: import.meta.env.VITE_MEASUREMENT_ID,
+    databaseURL: import.meta.env.VITE_RTDB_URL,
   }
   const app = initializeApp(firebaseConfig)
   const auth = getAuth(app)
   const googleProvider = new GoogleAuthProvider()
+  const db = getFirestore(app)
+  const rtdb = getDatabase(app)
   const analytics = getAnalytics(app)
   const value = {
     auth,
     googleProvider,
     signOut,
     signInWithPopup,
+    db,
+    rtdb,
   }
   return (
     <FirebaseContext.Provider value={value}>
