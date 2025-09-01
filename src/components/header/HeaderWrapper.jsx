@@ -46,6 +46,14 @@ export default function HeaderWrapper() {
     console.log("로그인상태: ", isLogOn)
   }, [isLogOn])
 
+  useEffect(() => {
+    const consol = () => {
+      console.log("HeaderWrapper")
+    }
+    consol()
+    return consol
+  }, [])
+
   return (
     <HeaderRoot>
       <Typography variant="h4" component={Link} to="/">
@@ -78,7 +86,7 @@ export default function HeaderWrapper() {
             sx={{ mr: 1 }}
             onClick={() => dispatch(logOut())}
           >
-            로그아웃
+            {user.name} 로그아웃
           </Button>
         ) : null}
         {!isLogOn ? (

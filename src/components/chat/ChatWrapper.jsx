@@ -71,7 +71,7 @@ export default function ChatWrapper({ children }) {
   useEffect(() => {
     const unsubscribe = onRtValue(commentRef, (snapshot) => {
       const dataArr = Object.values(snapshot?.val()).map((item) => {
-        item.isMine = item.uid === user.uid
+        item.isMine = item.id === user.uid
         return item
       })
       setList(dataArr)
