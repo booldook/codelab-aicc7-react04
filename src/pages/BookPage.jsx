@@ -17,8 +17,8 @@ export default function BookPage() {
     )
   return (
     <Box>
-      <BookForm swr={{ data, mutate }} />
-      <BookList swr={{ data, mutate }} />
+      <BookForm swr={{ mutate }} />
+      <BookList swr={{ data }} />
     </Box>
   )
 }
