@@ -7,7 +7,11 @@ import BookPage from "./pages/BookPage"
 import ChatPage from "./pages/ChatPage"
 import { Routes, Route } from "react-router-dom"
 import { useSelector } from "react-redux"
+import styled from "@emotion/styled"
 
+const RoutesWrapper = styled.div`
+  padding-top: 2em;
+`
 export default function Containers() {
   const theme = useSelector((state) => state.ui.theme)
   const themeConfig = createTheme({
@@ -19,12 +23,14 @@ export default function Containers() {
     <ThemeProvider theme={themeConfig}>
       <Container sx={{ paddingTop: "50px" }}>
         <HeaderWrapper />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/shop" element={<ShopPage />} />
-          <Route path="/book" element={<BookPage />} />
-          <Route path="/chat" element={<ChatPage />} />
-        </Routes>
+        <RoutesWrapper>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/shop" element={<ShopPage />} />
+            <Route path="/book" element={<BookPage />} />
+            <Route path="/chat" element={<ChatPage />} />
+          </Routes>
+        </RoutesWrapper>
       </Container>
     </ThemeProvider>
   )
