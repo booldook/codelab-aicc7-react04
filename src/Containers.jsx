@@ -3,7 +3,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles"
 import HeaderWrapper from "./components/header/HeaderWrapper"
 import HomePage from "./pages/HomePage"
 import ShopPage from "./pages/ShopPage"
-import BoardPage from "./pages/BoardPage"
+import BookPage from "./pages/BookPage"
 import ChatPage from "./pages/ChatPage"
 import { Routes, Route } from "react-router-dom"
 import { useSelector } from "react-redux"
@@ -22,7 +22,7 @@ export default function Containers() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/shop" element={<ShopPage />} />
-          <Route path="/board" element={<BoardPage />} />
+          <Route path="/book" element={<BookPage />} />
           <Route path="/chat" element={<ChatPage />} />
         </Routes>
       </Container>
