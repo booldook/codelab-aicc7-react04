@@ -1,12 +1,7 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import styled from "@emotion/styled"
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-} from "@mui/material"
+import { Button } from "@mui/material"
+import { AlertContext } from "@/providers/AlertProvider"
 
 const FormWrap = styled.form`
   display: flex;
@@ -22,37 +17,22 @@ const Input = styled.input`
 `
 export default function BookForm() {
   const [form, setForm] = useState({ title: "", content: "" })
-  const [isErrOpen, setIsErrOpen] = useState(false)
-  const [errMsg, setErrMsg] = useState("")
+  const { setIsAlertOpen, setAlertMsg } = useContext(AlertContext)
   const onSubmit = (e) => {
     if (form.title === "") {
-      setIsErrOpen(true)
-      setErrMsg("제목은 필수사항입니다.")
+      setIsAlertOpen(true)
+      setAlertMsg("제목은 필수사항입니다.")
       return
     }
     if (form.content === "") {
-      setIsErrOpen(true)
-      setErrMsg("내용은 필수사항입니다.")
+      setIsAlertOpen(true)
+      setAlertMsg("내용은 필수사항입니다.")
       return
     }
     // TODO :: 전송
   }
-  const handleClose = (e) => {
-    setIsErrOpen(false)
-    setErrMsg("")
-  }
   return (
     <FormWrap>
-      <Dialog open={isErrOpen} onClose={handleClose}>
-        <DialogContent>
-          <DialogContentText>{errMsg}</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} autoFocus>
-            확인
-          </Button>
-        </DialogActions>
-      </Dialog>
       <Input
         placeholder="제목"
         grow={1}
