@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useState } from "react"
 
 const FormWrapper = ({ onGetPrd, onResetPrd, onChangeSearch }) => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("")
   const onChange = (e) => {
-    setSearch(e.target.value);
-    onChangeSearch(e.target.value);
-  };
+    setSearch(e.target.value)
+    onChangeSearch(e.target.value)
+  }
   const onDeleteSearch = () => {
-    setSearch("");
-    onChangeSearch("");
-  };
+    setSearch("")
+    onChangeSearch("")
+  }
   return (
     <div className="form-wrapper">
       <form className="form-wrap">
@@ -28,8 +28,8 @@ const FormWrapper = ({ onGetPrd, onResetPrd, onChangeSearch }) => {
       <button
         className="btn"
         onClick={(e) => {
-          onGetPrd(e);
-          setSearch("");
+          onGetPrd()
+          setSearch("")
         }}
       >
         상품가져오기
@@ -37,14 +37,14 @@ const FormWrapper = ({ onGetPrd, onResetPrd, onChangeSearch }) => {
       <button
         className="btn"
         onClick={(e) => {
-          onResetPrd(e);
-          setSearch("");
+          onResetPrd(e)
+          setSearch("")
         }}
       >
         상품지우기
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default FormWrapper;
+export default FormWrapper
