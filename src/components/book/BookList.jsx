@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from "react"
+import dayjs from "dayjs"
 import {
   Table,
   TableBody,
@@ -19,6 +20,8 @@ export default function BookList({ swr }) {
             <TableCell>번호</TableCell>
             <TableCell>제목</TableCell>
             <TableCell>설명</TableCell>
+            <TableCell>저자</TableCell>
+            <TableCell>발행일</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -32,6 +35,10 @@ export default function BookList({ swr }) {
               </TableCell>
               <TableCell align="left">{row.title}</TableCell>
               <TableCell align="left">{row.content}</TableCell>
+              <TableCell align="center">{row.writer}</TableCell>
+              <TableCell align="center">
+                {row.publish_d ? dayjs(row.publish_d).format("YYYY-MM-DD") : ""}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
