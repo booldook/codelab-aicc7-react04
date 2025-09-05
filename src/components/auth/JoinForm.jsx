@@ -1,6 +1,8 @@
-import { useState, useActionState, useEffect } from "react"
+import { useState, useActionState, useEffect, useContext } from "react"
 import Button from "@mui/material/Button"
 import styled from "@emotion/styled"
+import axios from "axios"
+import { AlertContext } from "@/providers/AlertProvider"
 
 const FormWrap = styled.form`
   padding: 0.5em;
@@ -42,6 +44,7 @@ export default function JoinForm() {
   // const onChangeForm = (e) =>
   //   setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
 
+  const { setIsAlertOpen, setAlertMsg } = useContext(AlertContext)
   const createUser = async (prev, data) => {
     const usrNm = data.get("usrNm")
     const usrId = data.get("usrId")
@@ -49,14 +52,19 @@ export default function JoinForm() {
     const usrPwRe = data.get("usrPwRe")
     const usrEmail = data.get("usrEmail")
     // TODO :: Validation
-    // TODO :: axios
-    return {
-      usrNm,
-      usrId,
-      usrPw,
-      usrEmail,
-      error: null,
+    if (usrPw !== "" && usrPw !== usrPwRe) {
+      setAlertMsg("비밀번호가 일치하지 않습니다.")
+      setIsAlertOpen(true)
+      return { usrNm, usrId, usrEmail }
     }
+    // TODO :: axios
+    const rs = await axios({
+      url: import.meta.env.VITE_EXPRESS_API + "/auth/join",
+      method: "POST",
+      data: { usrNm, usrId, usrPw, usrEmail },
+    })
+    console.log(rs)
+    return { usrNm, usrId, usrPw, usrEmail, error: null }
   }
   const [formState, formAction] = useActionState(createUser, null)
 
