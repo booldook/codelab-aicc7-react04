@@ -1,4 +1,4 @@
-import { useState, useActionState } from "react"
+import { useState, useActionState, useEffect } from "react"
 import Button from "@mui/material/Button"
 import styled from "@emotion/styled"
 
@@ -40,11 +40,28 @@ export default function JoinForm() {
   })
   const createUser = (prev, data) => {
     const usrNm = data.get("usrNm")
-    console.log(prev, data)
+    const usrId = data.get("usrId")
+    const usrPw = data.get("usrPw")
+    const usrPwRe = data.get("usrPwRe")
+    const usrEmail = data.get("usrEmail")
+    // TODO :: Validation
+    // TODO :: axios
+    const newState = {
+      usrNm,
+      usrId,
+      usrPw,
+      usrEmail,
+      error: null,
+    }
+    return newState
   }
   const onChangeForm = (e) =>
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-  const [formState, formAction] = useActionState(createUser, form)
+  const [formState, formAction] = useActionState(createUser, null)
+
+  useEffect(() => {
+    console.log("Submitted data:", formState)
+  }, [formState])
 
   return (
     <div className="form-wrapper">
