@@ -55,15 +55,15 @@ export default function JoinForm() {
     if (usrPw !== "" && usrPw !== usrPwRe) {
       setAlertMsg("비밀번호가 일치하지 않습니다.")
       setIsAlertOpen(true)
-      return { usrNm, usrId, usrEmail }
+      return { usrNm, usrId, usrEmail, usrPw: "", usrPwRe: "" }
     }
     // TODO :: axios
-    const rs = await axios({
-      url: import.meta.env.VITE_EXPRESS_API + "/auth/join",
-      method: "POST",
-      data: { usrNm, usrId, usrPw, usrEmail },
-    })
-    console.log(rs)
+    // const rs = await axios({
+    //   url: import.meta.env.VITE_EXPRESS_API + "/auth/join",
+    //   method: "POST",
+    //   data: { usrNm, usrId, usrPw, usrEmail },
+    // })
+    // console.log(rs)
     return { usrNm, usrId, usrPw, usrEmail, error: null }
   }
   const [formState, formAction] = useActionState(createUser, null)
