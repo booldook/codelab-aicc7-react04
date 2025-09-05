@@ -29,6 +29,7 @@ export default function Containers() {
             <Route path="/shop" element={<ShopPage />} />
             <Route path="/book" element={<BookPage />} />
             <Route path="/chat" element={<ChatPage />} />
+            <Route path="/join" element={<JoinPage />} />
           </Routes>
         </RoutesWrapper>
       </Container>

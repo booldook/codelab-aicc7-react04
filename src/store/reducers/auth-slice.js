@@ -2,18 +2,17 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 
 const initialState = {
+  // 채팅(구글)로그인
   isLogging: false,
   isLogOn: false,
   user: {},
   error: null,
+  // Express 로그인
+  isLocalLogging: false,
+  isLocalLogOn: false,
+  localUser: {},
+  localError: null,
 }
-
-// 예제코드 - 실행되지 않는다.
-export const fetchUser = createAsyncThunk("auth/fetchUser", async (userId) => {
-  const url = "https://jsonplaceholder.typicode.com/users/"
-  const response = await axios(url + userId)
-  return response
-})
 
 const authSlice = createSlice({
   name: "auth",
@@ -31,32 +30,20 @@ const authSlice = createSlice({
       state.user = {}
       state.error = null
     },
-  },
-  // 예제코드: 실행되지 않는다.
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchUser.pending, (state) => {
-        state.user.isLogging = true
-      })
-      .addCase(fetchUser.fulfilled, (state, action) => {
-        state.user.isLogging = false
-        state.user.isLogOn = true
-        state.user.data = action.payload.data || {}
-        state.user.error = null
-      })
-      .addCase(fetchUser.rejected, (state, action) => {
-        state.user.isLogging = false
-        state.user.isLogOn = false
-        state.user.data = {}
-        state.user.error = action.payload.error.data || null
-      })
+    localLogOn: (state, action) => {
+      state.isLocalLogging = false
+      state.isLocalLogOn = !!action.payload.isLocalLogOn
+      state.localUser = action.payload.localUser
+      state.localError = null
+    },
+    localLogOut: (state) => {
+      state.isLocalLogging = false
+      state.isLocalLogOn = false
+      state.localUser = {}
+      state.localError = null
+    },
   },
 })
 
 export default authSlice.reducer
-export const { logOn, logOut } = authSlice.actions
-
-// export default React
-// export { useState, useCallback }
-// import glbReducer from "glb-slice"
-// import { fetchUser } from "glb-slice"
+export const { logOn, logOut, localLogOn, localLogOut } = authSlice.actions
