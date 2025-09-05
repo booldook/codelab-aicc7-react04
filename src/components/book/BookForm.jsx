@@ -42,6 +42,11 @@ export default function BookForm({ swr }) {
       setAlertMsg("내용은 필수사항입니다.")
       return
     }
+    if (form.writer === "") {
+      setIsAlertOpen(true)
+      setAlertMsg("저자는 필수사항입니다.")
+      return
+    }
     const { data } = await axios({
       url: import.meta.env.VITE_EXPRESS_API + "/book",
       method: "post",
