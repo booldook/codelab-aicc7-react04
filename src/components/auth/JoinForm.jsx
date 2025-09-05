@@ -31,34 +31,73 @@ const ButtonWrap = styled.div`
 `
 
 export default function JoinForm() {
-  const createUser = () => {}
-  const [formState, formAction] = useActionState(createUser, {})
+  const [form, setForm] = useState({
+    usrNm: "",
+    usrId: "",
+    usrPw: "",
+    usrPwRe: "",
+    usrEmail: "",
+  })
+  const createUser = (prev, data) => {
+    const usrNm = data.get("usrNm")
+    console.log(prev, data)
+  }
+  const onChangeForm = (e) =>
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  const [formState, formAction] = useActionState(createUser, form)
 
   return (
     <div className="form-wrapper">
       <FormWrap action={formAction}>
         <FormList>
           <FormListTitle>이름</FormListTitle>
-          <Input type="text" name="usrNm" />
+          <Input
+            type="text"
+            name="usrNm"
+            value={form.usrNm}
+            onChange={onChangeForm}
+          />
         </FormList>
         <FormList>
           <FormListTitle>아이디</FormListTitle>
-          <Input type="text" name="usrId" />
+          <Input
+            type="text"
+            name="usrId"
+            value={form.usrId}
+            onChange={onChangeForm}
+          />
         </FormList>
         <FormList>
           <FormListTitle>비밀번호</FormListTitle>
-          <Input type="password" name="usrPw" />
+          <Input
+            type="password"
+            name="usrPw"
+            value={form.usrPw}
+            onChange={onChangeForm}
+          />
         </FormList>
         <FormList>
           <FormListTitle>비밀번호재입력</FormListTitle>
-          <Input type="password" name="usrPwRe" />
+          <Input
+            type="password"
+            name="usrPwRe"
+            value={form.usrPwRe}
+            onChange={onChangeForm}
+          />
         </FormList>
         <FormList>
           <FormListTitle>이메일</FormListTitle>
-          <Input type="text" name="usrEmail" />
+          <Input
+            type="text"
+            name="usrEmail"
+            value={form.usrEmail}
+            onChange={onChangeForm}
+          />
         </FormList>
         <ButtonWrap>
-          <Button variant="contained">회원가입</Button>
+          <Button variant="contained" type="submit">
+            회원가입
+          </Button>
         </ButtonWrap>
       </FormWrap>
     </div>
