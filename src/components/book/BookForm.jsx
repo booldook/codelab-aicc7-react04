@@ -2,9 +2,9 @@ import { useState, useContext } from "react"
 import styled from "@emotion/styled"
 import { Button } from "@mui/material"
 import { AlertContext } from "@/providers/AlertProvider"
-import axios from "axios"
 import { DayPicker } from "react-day-picker"
 import "react-day-picker/style.css"
+import { api } from "@/modules/api"
 
 const FormWrap = styled.form`
   display: flex;
@@ -42,9 +42,9 @@ export default function BookForm({ swr }) {
       setAlertMsg("내용은 필수사항입니다.")
       return
     }
-    const { data } = await axios({
-      url: import.meta.env.VITE_EXPRESS_API + "/book",
-      method: "post",
+    const { data } = await api({
+      url: "/book",
+      type: "POST",
       data: {
         title: form.title,
         content: form.content,
