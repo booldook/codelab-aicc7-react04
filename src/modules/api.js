@@ -48,7 +48,7 @@ instance.interceptors.request.use(
       const token = getAccessToken()
       if (token) {
         config.headers.Authorization = `Bearer ${token}`
-        config.withCredentials = true
+        config.headers.withCredentials = true
       }
     }
     if (config.method?.toUpperCase() === "FILE") {
