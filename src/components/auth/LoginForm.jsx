@@ -9,6 +9,13 @@ const FormWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 80vh;
+`
+const Title = styled.h2`
+  font-size: 2em;
+  padding: 0.5em 0;
+  border-bottom: 1px solid #eee;
+  text-align: center;
 `
 const FormWrap = styled.form`
   max-width: 500px;
@@ -59,6 +66,7 @@ export default function LoginForm() {
       method: "POST",
       data: { usrId, usrPw },
     })
+    console.log(rs)
     if (rs?.data?.success === "OK") {
       setIsAlertOpen(true)
       setAlertMsg("로그인 되었습니다.")
@@ -74,15 +82,7 @@ export default function LoginForm() {
   return (
     <FormWrapper>
       <FormWrap action={formAction}>
-        <FormList>
-          <FormListTitle>이름</FormListTitle>
-          <Input
-            type="text"
-            name="usrNm"
-            value={form.usrNm}
-            onChange={onChangeForm}
-          />
-        </FormList>
+        <Title>로그인</Title>
         <FormList>
           <FormListTitle>아이디</FormListTitle>
           <Input
@@ -101,27 +101,9 @@ export default function LoginForm() {
             onChange={onChangeForm}
           />
         </FormList>
-        <FormList>
-          <FormListTitle>비밀번호재입력</FormListTitle>
-          <Input
-            type="password"
-            name="usrPwRe"
-            value={form.usrPwRe}
-            onChange={onChangeForm}
-          />
-        </FormList>
-        <FormList>
-          <FormListTitle>이메일</FormListTitle>
-          <Input
-            type="text"
-            name="usrEmail"
-            value={form.usrEmail}
-            onChange={onChangeForm}
-          />
-        </FormList>
         <ButtonWrap>
           <Button variant="contained" type="submit">
-            회원가입
+            로그인
           </Button>
         </ButtonWrap>
       </FormWrap>
