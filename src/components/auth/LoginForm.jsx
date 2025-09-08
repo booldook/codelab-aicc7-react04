@@ -1,9 +1,12 @@
 import { useState, useActionState, useEffect, useContext } from "react"
+import { useDispatch } from "react-redux"
+import { localLogOn } from "@/store/reducers/auth-slice"
 import Button from "@mui/material/Button"
 import styled from "@emotion/styled"
 import axios from "axios"
 import { AlertContext } from "@/providers/AlertProvider"
 import { useNavigate } from "react-router-dom"
+import { setTokens } from "@/modules/api"
 
 const FormWrapper = styled.div`
   display: flex;
@@ -47,6 +50,7 @@ const ButtonWrap = styled.div`
 `
 
 export default function LoginForm() {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [form, setForm] = useState({ usrId: "", usrPw: "" })
   const onChangeForm = (e) =>
@@ -66,10 +70,15 @@ export default function LoginForm() {
       method: "POST",
       data: { usrId, usrPw },
     })
-    console.log(rs)
     if (rs?.data?.success === "OK") {
+      dispatch(localLogOn(rs?.data?.data?.user || {}))
+      setTokens(
+        rs?.data?.data?.accessToken || "",
+        rs?.data?.data?.refreshToken || ""
+      )
       setIsAlertOpen(true)
       setAlertMsg("로그인 되었습니다.")
+
       navigate("/")
     } else {
       setIsAlertOpen(true)
