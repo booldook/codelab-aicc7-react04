@@ -10,7 +10,6 @@ export default function ErrorProvider({ children }) {
       console.log("ErrorProvider", e)
     }
     window.addEventListener("ERROR_API", onError)
-    console.log("ErrorProvider Init")
     return () => window.removeEventListener("ERROR_API", onError)
   }, [])
 
