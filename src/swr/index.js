@@ -32,7 +32,7 @@ use: 미들웨어 함수의 배열 (상세내용)
 import { api } from "@/modules/api"
 
 export const expressFetcher = (url) => {
-  return api({ url }).then((response) => response.data)
+  return api({ url }).then((response) => response)
 }
 
 // 예시

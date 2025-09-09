@@ -1,4 +1,7 @@
 /**
+ * axios -> rs : { config, headers, ... error, data }
+ * rs.data -> { success: "OK" | "FAIL", data?: {}, error?: {} }
+ *
  * 1. api 공통 파라메터 생성
  * 2. 토큰 저장/가져오는 함수(LocalStorage)
  * 3. interceptors.request 토큰 탑재
@@ -49,9 +52,10 @@ export const retrieveToken = async () => {
       refreshToken,
     },
   })
-  console.log(rs)
-  // setTokens({ accessToken: rs.accessToken, refreshToken: rs.refreshToken })
-  return rs ? true : false
+  if (rs?.success === "OK") {
+    setTokens(rs?.data?.accessToken, rs?.data?.refreshToken)
+  }
+  return rs?.success === "OK"
 }
 
 const instance = axios.create({
@@ -101,14 +105,16 @@ instance.interceptors.response.use(
 )
 
 // data: post, params: get
-const api = ({ url, type = "GET", data = null, params = null }) => {
+const api = async ({ url, type = "GET", data = null, params = null }) => {
   let method = type.toUpperCase()
-  return instance({
+  const response = await instance({
     method,
     url,
     data,
     params,
   })
+  // TODO :: response.error
+  return response.data
 }
 
 export { api }
