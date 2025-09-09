@@ -6,12 +6,12 @@ export default function ErrorProvider({ children }) {
   const [rootError, setRootError] = useState(null)
 
   useEffect(() => {
-    console.log("ErrorProvider Init")
     const onError = (e) => {
       console.log("ErrorProvider", e)
     }
     window.addEventListener("ERROR_API", onError)
-    return window.removeEventListener("ERROR_API", onError)
+    console.log("ErrorProvider Init")
+    return () => window.removeEventListener("ERROR_API", onError)
   }, [])
 
   return (
