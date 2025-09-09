@@ -51,3 +51,13 @@ const map = new Map()
 map.set("A", "AA")
 console.log(map.get("A"))
 ```
+
+### Event처리
+
+```js
+window.addEventListener("onload", (e) => {})
+window.getElementById("#btn").addEventListener("onclick", (e) => {})
+
+window.customEvent(new CustomEvent("ERROR_500", { msg: "...", code: "" }))
+window.addEventListener("ERROR_500", (e) => {})
+```

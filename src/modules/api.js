@@ -47,7 +47,9 @@ export const retrieveToken = async () => {
   const refreshToken = getRefreshToken()
   if (!refreshToken) {
     clearTokens()
-    throw new Error("토큰만료")
+    window.dispatchEvent(
+      new CustomEvent("ERROR_API", { code: 403, msg: "리플래시 토큰 오류" })
+    )
   }
   const rs = await api({
     url: "/public/refresh",
@@ -94,7 +96,8 @@ instance.interceptors.request.use(
     return config
   },
   (error) => {
-    return Promise.reject(error)
+    return Promise.resolve(null)
+    // return Promise.reject(error)
   }
 )
 
@@ -114,7 +117,8 @@ instance.interceptors.response.use(
     if (error.response?.status === 500) {
       // 공통 에러 처리
     }
-    return Promise.reject(error)
+    return Promise.resolve(null)
+    // return Promise.reject(error)
   }
 )
 
@@ -128,7 +132,7 @@ const api = async ({ url, type = "GET", data = null, params = null }) => {
     params,
   })
   // TODO :: response.error
-  return response.data
+  return response?.data || null
 }
 
 export { api }

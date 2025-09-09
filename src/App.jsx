@@ -11,6 +11,7 @@ import { swrValue } from "./swr"
 
 import "@/assets/styles/app.scss"
 import AlertProvider from "./providers/AlertProvider"
+import ErrorProvider from "./providers/ErrorProviders"
 
 function App() {
   return (
@@ -21,7 +22,9 @@ function App() {
             <FirebaseProvider>
               <BrowserRouter>
                 <TestProvider>
-                  <Containers />
+                  <ErrorProvider>
+                    <Containers />
+                  </ErrorProvider>
                 </TestProvider>
               </BrowserRouter>
             </FirebaseProvider>

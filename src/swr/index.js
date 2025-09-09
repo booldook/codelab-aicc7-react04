@@ -156,6 +156,10 @@ export const swrValue = {
   // 현재는 에러, 키, 설정을 콘솔에 출력하도록 정의됨.
   onError: (err, key, config) => {
     console.log(err, key, config)
+    console.log("여기2")
+    window.dispatchEvent(
+      new CustomEvent("ERROR_API", { code: 403, msg: "리플래시 토큰 오류" })
+    )
   },
 
   // onErrorRetry: (err, key, config, revalidate, revalidateOps) => {},
