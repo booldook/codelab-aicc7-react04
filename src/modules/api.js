@@ -15,6 +15,10 @@ export const BASE_URL = import.meta.env.VITE_EXPRESS_API
 export const REFRESH_URL = import.meta.env.VITE_REFRESH_API
 export const TIMEOUT = Number(import.meta.env.VITE_TIMEOUT_API)
 
+/***** 전역변수 *****/
+let promiseQueue = []
+let isUpdatingToken = false
+
 /***** 토큰 Getter/Setter *****/
 export const getAccessToken = () => {
   return window.localStorage.getItem("accessToken")
@@ -54,15 +58,22 @@ export const retrieveToken = async () => {
   })
   if (rs?.success === "OK") {
     setTokens(rs?.data?.accessToken, rs?.data?.refreshToken)
+    promiseQueue.forEach((config) => {
+      instance(config)
+    })
+    isUpdatingToken = false
+    promiseQueue = []
   }
   return rs?.success === "OK"
 }
 
+/***** Axios Instance *****/
 const instance = axios.create({
   baseURL: BASE_URL,
   timeout: TIMEOUT,
 })
 
+/***** Axios Request 콜백 *****/
 instance.interceptors.request.use(
   (config) => {
     const url = config.url || ""
@@ -87,15 +98,17 @@ instance.interceptors.request.use(
   }
 )
 
+/***** Axios Response 콜백 *****/
 instance.interceptors.response.use(
   (response) => {
     return response
   },
-  (error) => {
-    if (error.response?.status === 401) {
+  async (error) => {
+    if (error?.status === 401) {
       // TODO :: 리플래시 토큰 요청 코드
-      // if (retrieveToken()) {
-      // }
+      retrieveToken()
+      promiseQueue.push(error.config)
+      isUpdatingToken = true
     }
     if (error.response?.status === 500) {
       // 공통 에러 처리
