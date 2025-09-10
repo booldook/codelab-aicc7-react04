@@ -128,6 +128,7 @@ instance.interceptors.response.use(
       }
     } else {
       // 공통 에러 처리 500등
+      console.log(error)
       const { cod, msg, data } = error?.response?.data?.error || {}
       window.dispatchEvent(
         new CustomEvent("ERROR_API", {
