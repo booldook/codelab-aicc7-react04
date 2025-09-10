@@ -48,7 +48,9 @@ export const retrieveToken = async () => {
   if (!refreshToken) {
     clearTokens()
     window.dispatchEvent(
-      new CustomEvent("ERROR_API", { cod: 403, msg: "리플래시 토큰 오류" })
+      new CustomEvent("ERROR_API", {
+        detail: { cod: 403, msg: "리플래시 토큰 오류" },
+      })
     )
   } else {
     const rs = await apiPost("/public/refresh", { refreshToken })
@@ -88,7 +90,9 @@ instance.interceptors.request.use(
   },
   (err) => {
     window.dispatchEvent(
-      new CustomEvent("ERROR_API", { cod: 403, msg: "API 요청 오류", err })
+      new CustomEvent("ERROR_API", {
+        detail: { cod: 403, msg: "API 요청 오류", err },
+      })
     )
     return Promise.reject(null)
   }
@@ -97,10 +101,14 @@ instance.interceptors.request.use(
 /***** Axios Response 콜백 *****/
 instance.interceptors.response.use(
   (response) => {
-    if (response.data?.success === "FAIL" && error) {
+    if (response.data?.success === "FAIL" && response.data?.error) {
       // 비지니스에러
-      const { cod, msg } = error
-      window.dispatchEvent(new CustomEvent("ERROR_BIZ", { cod, msg }))
+      const { cod, msg, data } = response.data?.error || {}
+      window.dispatchEvent(
+        new CustomEvent("ERROR_BIZ", {
+          detail: { cod, msg, data },
+        })
+      )
       return null
     }
     return response?.data || null
@@ -119,9 +127,14 @@ instance.interceptors.response.use(
         }
       }
     } else {
-      // 공통 에러 처리
-      const { cod, msg, err } = error
-      window.dispatchEvent(new CustomEvent("ERROR_API", { cod, msg, err }))
+      // 공통 에러 처리 500등
+      const { cod, msg, data } = error?.response?.data?.error || {}
+      debugger
+      window.dispatchEvent(
+        new CustomEvent("ERROR_API", {
+          detail: { cod, msg, data },
+        })
+      )
     }
     return Promise.reject(null)
   }

@@ -15,23 +15,23 @@ import ErrorProvider from "./providers/ErrorProviders"
 
 function App() {
   return (
-    <StoreProvider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <AlertProvider>
-          <SWRConfig value={swrValue}>
-            <FirebaseProvider>
-              <BrowserRouter>
-                <TestProvider>
-                  <ErrorProvider>
+    <ErrorProvider>
+      <StoreProvider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <AlertProvider>
+            <SWRConfig value={swrValue}>
+              <FirebaseProvider>
+                <BrowserRouter>
+                  <TestProvider>
                     <Containers />
-                  </ErrorProvider>
-                </TestProvider>
-              </BrowserRouter>
-            </FirebaseProvider>
-          </SWRConfig>
-        </AlertProvider>
-      </PersistGate>
-    </StoreProvider>
+                  </TestProvider>
+                </BrowserRouter>
+              </FirebaseProvider>
+            </SWRConfig>
+          </AlertProvider>
+        </PersistGate>
+      </StoreProvider>
+    </ErrorProvider>
   )
 }
 
