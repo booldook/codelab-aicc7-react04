@@ -50,23 +50,20 @@ export const retrieveToken = async () => {
     window.dispatchEvent(
       new CustomEvent("ERROR_API", { code: 403, msg: "리플래시 토큰 오류" })
     )
-  }
-  const rs = await api({
-    url: "/public/refresh",
-    type: "POST",
-    data: {
-      refreshToken,
-    },
-  })
-  if (rs?.success === "OK") {
-    setTokens(rs?.data?.accessToken, rs?.data?.refreshToken)
-    promiseQueue.forEach((config) => {
-      instance(config)
+  } else {
+    const rs = await api({
+      url: "/public/refresh",
+      type: "POST",
+      data: {
+        refreshToken,
+      },
     })
-    isUpdatingToken = false
-    promiseQueue = []
+    if (rs?.success === "OK") {
+      setTokens(rs?.data?.accessToken, rs?.data?.refreshToken)
+      return true
+    }
   }
-  return rs?.success === "OK"
+  return false
 }
 
 /***** Axios Instance *****/
@@ -95,9 +92,11 @@ instance.interceptors.request.use(
     }
     return config
   },
-  (error) => {
-    return Promise.resolve(null)
-    // return Promise.reject(error)
+  (err) => {
+    window.dispatchEvent(
+      new CustomEvent("ERROR_API", { cod: 403, msg: "API 요청 오류", err })
+    )
+    return Promise.reject(null)
   }
 )
 
@@ -109,10 +108,16 @@ instance.interceptors.response.use(
   async (error) => {
     if (error?.status === 401) {
       console.log("===== 리플래시 토큰 갱신 요청 =====")
-      // TODO :: 리플래시 토큰 요청 코드
-      retrieveToken()
+      if (!isUpdatingToken) {
+        if (retrieveToken()) {
+          promiseQueue.forEach((config) => instance(config))
+          isUpdatingToken = false
+          promiseQueue = []
+        } else {
+        }
+        // TODO :: 처리할것
+      }
       promiseQueue.push(error.config)
-      isUpdatingToken = true
     }
     if (error.response?.status === 500) {
       // 공통 에러 처리
@@ -123,16 +128,31 @@ instance.interceptors.response.use(
 )
 
 // data: post, params: get
-const api = async ({ url, type = "GET", data = null, params = null }) => {
-  let method = type.toUpperCase()
+const api = async (url, params = null) => {
   const response = await instance({
-    method,
+    method: "GET",
     url,
-    data,
     params,
   })
-  // TODO :: response.error
   return response?.data || null
 }
 
-export { api }
+const apiPost = async (url, data = null) => {
+  const response = await instance({
+    method: "POST",
+    url,
+    data,
+  })
+  return response?.data || null
+}
+
+const apiFile = async (url, data = null) => {
+  const response = await instance({
+    method: "FILE",
+    url,
+    data,
+  })
+  return response?.data || null
+}
+
+export { api, apiPost, apiFile }
