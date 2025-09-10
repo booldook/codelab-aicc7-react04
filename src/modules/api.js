@@ -48,16 +48,10 @@ export const retrieveToken = async () => {
   if (!refreshToken) {
     clearTokens()
     window.dispatchEvent(
-      new CustomEvent("ERROR_API", { code: 403, msg: "리플래시 토큰 오류" })
+      new CustomEvent("ERROR_API", { cod: 403, msg: "리플래시 토큰 오류" })
     )
   } else {
-    const rs = await api({
-      url: "/public/refresh",
-      type: "POST",
-      data: {
-        refreshToken,
-      },
-    })
+    const rs = await apiPost("/public/refresh", { refreshToken })
     if (rs?.success === "OK") {
       setTokens(rs?.data?.accessToken, rs?.data?.refreshToken)
       return true
@@ -103,27 +97,33 @@ instance.interceptors.request.use(
 /***** Axios Response 콜백 *****/
 instance.interceptors.response.use(
   (response) => {
-    return response
+    if (response.data?.success === "FAIL" && error) {
+      // 비지니스에러
+      const { cod, msg } = error
+      window.dispatchEvent(new CustomEvent("ERROR_BIZ", { cod, msg }))
+      return null
+    }
+    return response?.data || null
   },
   async (error) => {
     if (error?.status === 401) {
       console.log("===== 리플래시 토큰 갱신 요청 =====")
       if (!isUpdatingToken) {
+        // 갱신중
         if (retrieveToken()) {
           promiseQueue.forEach((config) => instance(config))
           isUpdatingToken = false
           promiseQueue = []
         } else {
+          promiseQueue.push(error.config)
         }
-        // TODO :: 처리할것
       }
-      promiseQueue.push(error.config)
-    }
-    if (error.response?.status === 500) {
+    } else {
       // 공통 에러 처리
+      const { cod, msg, err } = error
+      window.dispatchEvent(new CustomEvent("ERROR_API", { cod, msg, err }))
     }
-    return Promise.resolve(null)
-    // return Promise.reject(error)
+    return Promise.reject(null)
   }
 )
 
@@ -134,7 +134,7 @@ const api = async (url, params = null) => {
     url,
     params,
   })
-  return response?.data || null
+  return response || null
 }
 
 const apiPost = async (url, data = null) => {
@@ -143,7 +143,7 @@ const apiPost = async (url, data = null) => {
     url,
     data,
   })
-  return response?.data || null
+  return response || null
 }
 
 const apiFile = async (url, data = null) => {
@@ -152,7 +152,7 @@ const apiFile = async (url, data = null) => {
     url,
     data,
   })
-  return response?.data || null
+  return response || null
 }
 
 export { api, apiPost, apiFile }
