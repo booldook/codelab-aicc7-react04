@@ -129,7 +129,6 @@ instance.interceptors.response.use(
     } else {
       // 공통 에러 처리 500등
       const { cod, msg, data } = error?.response?.data?.error || {}
-      debugger
       window.dispatchEvent(
         new CustomEvent("ERROR_API", {
           detail: { cod, msg, data },
