@@ -12,12 +12,16 @@ import {
 } from "@mui/material"
 
 export default function BookList({ swr }) {
+  const onImgError = (e) => {
+    e.target.src = "/images/no-image.jpg"
+  }
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }}>
         <TableHead>
           <TableRow>
             <TableCell>번호</TableCell>
+            <TableCell>커버</TableCell>
             <TableCell>제목</TableCell>
             <TableCell>설명</TableCell>
             <TableCell>저자</TableCell>
@@ -32,6 +36,14 @@ export default function BookList({ swr }) {
             >
               <TableCell component="th" scope="row">
                 {row.id}
+              </TableCell>
+              <TableCell>
+                <img
+                  src={import.meta.env.VITE_EXPRESS_API + row.imgSrc}
+                  alt="커버"
+                  onError={onImgError}
+                  style={{ maxWidth: "80px", textAlign: "center" }}
+                />
               </TableCell>
               <TableCell align="left">{row.title}</TableCell>
               <TableCell align="left">{row.content}</TableCell>
